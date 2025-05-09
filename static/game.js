@@ -14,17 +14,15 @@ boardEl.style.setProperty("grid-template-columns", `repeat(${size}, 1fr)`);
 socket.emit("join", { room, name: playerName });
 
 socket.on("player_joined", (data) => {
-  if (!playerId) {
-    playerId = 1;
-    isMyTurn = true;
-    statusEl.innerText = `You are Player 1 (X). Welcome ${data.name}!`;
-  } else {
-    playerId = 2;
-    isMyTurn = false;
-    statusEl.innerText = `You are Player 2 (O). Welcome ${data.name}!`;
-  }
-  renderBoard();
-});
+    playerId = data.player;
+    isMyTurn = (playerId === 1);
+    statusEl.innerText = `You are Player ${playerId} (${playerId === 1 ? 'X' : 'O'}). Welcome ${data.name}!`;
+    renderBoard();
+  });
+  
+  socket.on("room_full", () => {
+    alert("Room is full. Only 2 players can join.");
+  });  
 
 socket.on("move_made", (data) => {
   const { row, col, player } = data;
