@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request
 from flask_socketio import SocketIO, emit, join_room
 import eventlet
-
 eventlet.monkey_patch()
 
 app = Flask(__name__)
@@ -28,13 +27,12 @@ def on_join(data):
 
 @socketio.on("move")
 def on_move(data):
-    room = data["room"]
-    emit("move_made", data, room=room)
+    emit("move_made", data, room=data["room"])
 
 @socketio.on("restart")
 def on_restart(data):
-    room = data["room"]
-    emit("game_reset", {}, room=room)
+    emit("game_reset", {}, room=data["room"])
 
 if __name__ == "__main__":
-    socketio.run(app, host="0.0.0.0", port=10000)
+    port = int(os.environ.get("PORT", 5000))
+    socketio.run(app, host="0.0.0.0", port=port)
