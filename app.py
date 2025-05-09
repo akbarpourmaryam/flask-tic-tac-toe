@@ -27,8 +27,10 @@ def game():
 # SocketIO events
 @socketio.on("join")
 def on_join(data):
-    join_room(data["room"])
-    emit("player_joined", {"room": data["room"], "name": data.get("name", "Anonymous")}, room=data["room"])
+    room = data["room"]
+    name = data.get("name", "Anonymous")
+    join_room(room)
+    emit("player_joined", {"room": room, "name": name}, room=room)
 
 @socketio.on("move")
 def on_move(data):
