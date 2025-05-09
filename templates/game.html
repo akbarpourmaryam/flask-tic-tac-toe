@@ -1,21 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Game Room</title>
-  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-  <script src="/static/game.js" defer></script>
+  <link rel="stylesheet" href="/static/styles.css" />
 </head>
 <body>
-    <h1>Room: {{ room }}</h1>
-    <h2 id="status">Waiting for player...</h2>
-    <div id="board" class="board"></div>
-    <button id="restartBtn" style="display:none;">Play Again</button>
-  
-    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-    <script>
-        const room = "{{ room }}";
-        const size = {{ size }};
-      </script>      
-    <script src="/static/game.js" defer></script>
-  </body>  
+  <h1>Room: {{ room }}</h1>
+  <h2 id="status">Waiting for player...</h2>
+
+  <div id="board" class="board"></div>
+
+  <button id="restartBtn" style="display:none;">Play Again</button>
+
+  <!-- Socket.IO -->
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js" defer></script>
+
+  <!-- Injected data -->
+  <script defer>
+    const room = "{{ room }}";
+    const size = {{ size }};
+    const playerName = "{{ name }}";
+  </script>
+
+  <!-- Game logic -->
+  <script src="/static/game.js" defer></script>
+</body>
 </html>

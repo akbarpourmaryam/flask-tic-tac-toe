@@ -5,17 +5,11 @@
 </head>
 <body>
   <h1>Multiplayer Tic Tac Toe</h1>
-  <form action="/game">
-    <label>Room Code:</label><br>
-    <input name="room" required><br><br>
-
-    <label>Your Name:</label><br>
-    <input name="name" required><br><br>
-
-    <label>Board Size (N x N):</label><br>
-    <input type="number" name="size" min="3" max="10" value="3"><br><br>
-
+  <form action="/game" method="get">
+    <input type="text" name="name" placeholder="Your Name" required />
+    <input type="text" name="room" placeholder="Room ID" required />
+    <input type="number" name="size" placeholder="Board Size (e.g. 3)" min="3" max="10" />
     <button type="submit">Join Game</button>
-  </form>
+  </form>  
 </body>
 </html>

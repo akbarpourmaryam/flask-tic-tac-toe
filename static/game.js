@@ -11,19 +11,35 @@ let winner = null;
 // Set CSS grid
 boardEl.style.setProperty("grid-template-columns", `repeat(${size}, 1fr)`);
 
+// Emit join on page load
 socket.emit("join", { room, name: playerName });
 
+// ✅ When a player joins — log only
 socket.on("player_joined", (data) => {
-    playerId = data.player;
+  console.log(`${data.name} joined the room.`);
+});
+
+// ✅ Start game once two players are in the room
+socket.on("start_game", (data) => {
+    const playerInfo = data.players.find(p => p.name === playerName);
+    if (!playerInfo) {
+      console.error("Could not find this player in start_game data");
+      return;
+    }
+  
+    playerId = playerInfo.player;
     isMyTurn = (playerId === 1);
-    statusEl.innerText = `You are Player ${playerId} (${playerId === 1 ? 'X' : 'O'}). Welcome ${data.name}!`;
+    statusEl.innerText = isMyTurn ? "Your turn" : "Waiting for opponent...";
     renderBoard();
   });
   
-  socket.on("room_full", () => {
-    alert("Room is full. Only 2 players can join.");
-  });  
 
+// Optional: if a 3rd person tries to join
+socket.on("room_full", () => {
+  alert("Room is full. Only 2 players can join.");
+});
+
+// When a move is made
 socket.on("move_made", (data) => {
   const { row, col, player } = data;
   board[row][col] = player;
@@ -59,32 +75,38 @@ restartBtn.addEventListener("click", () => {
 });
 
 function renderBoard() {
-  boardEl.innerHTML = '';
-  board.forEach((row, r) => {
-    row.forEach((cell, c) => {
-      const div = document.createElement("div");
-      div.classList.add("cell");
-
-      if (cell === 1) {
-        div.textContent = "X";
-        div.classList.add("taken", "player-1");
-      } else if (cell === 2) {
-        div.textContent = "O";
-        div.classList.add("taken", "player-2");
-      }
-
-      if (cell === 0 && isMyTurn && !winner) {
-        div.addEventListener("click", () => {
-          socket.emit("move", { room, row: r, col: c, player: playerId });
-        });
-      } else {
-        div.classList.add("taken");
-      }
-
-      boardEl.appendChild(div);
+    console.log("⚙️ renderBoard called");
+    console.log("Current board state:", board);
+    console.log("Player ID:", playerId, "Is my turn?", isMyTurn, "Winner:", winner);
+  
+    boardEl.innerHTML = '';
+    board.forEach((row, r) => {
+      row.forEach((cell, c) => {
+        const div = document.createElement("div");
+        div.classList.add("cell");
+  
+        if (cell === 1) {
+          div.textContent = "X";
+          div.classList.add("taken", "player-1");
+        } else if (cell === 2) {
+          div.textContent = "O";
+          div.classList.add("taken", "player-2");
+        }
+  
+        if (cell === 0 && isMyTurn && !winner) {
+          div.addEventListener("click", () => {
+            console.log(`🖱️ Clicked on cell [${r}, ${c}]`);
+            socket.emit("move", { room, row: r, col: c, player: playerId });
+          });
+        } else {
+          div.classList.add("taken");
+        }
+  
+        boardEl.appendChild(div);
+      });
     });
-  });
-}
+  }
+  
 
 function checkWinner(board) {
   for (let i = 0; i < size; i++) {
