@@ -11,6 +11,7 @@ from flask_socketio import SocketIO, emit, join_room
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, async_mode='eventlet')
+room_players = {}
 
 # Routes
 @app.route("/")
@@ -39,6 +40,32 @@ def on_move(data):
 @socketio.on("restart")
 def on_restart(data):
     emit("game_reset", {}, room=data["room"])
+
+@socketio.on("join")
+def on_join(data):
+    room = data["room"]
+    name = data.get("name", "Anonymous")
+
+    # initialize if not seen
+    if room not in room_players:
+        room_players[room] = []
+
+    # limit to 2 players
+    if len(room_players[room]) >= 2:
+        emit("room_full", {}, room=request.sid)
+        return
+
+    player_number = len(room_players[room]) + 1
+    room_players[room].append(player_number)
+
+    join_room(room)
+
+    emit("player_joined", {
+        "room": room,
+        "name": name,
+        "player": player_number
+    }, room=request.sid)
+
 
 # Run app
 if __name__ == "__main__":
