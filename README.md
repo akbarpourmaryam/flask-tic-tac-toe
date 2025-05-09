@@ -90,16 +90,6 @@ flask-tic-tac-toe/
 
 ---
 
-## ✅ Next Improvements
-
-- [ ] Confetti animation on win 🎉
-- [ ] Add computer AI fallback (minimax)
-- [ ] Save player stats or leaderboard
-- [ ] Chat between players in-game
-- [ ] Shareable room links
-
----
-
 ## 🙋‍♀️ Author
 
 **Maryam Akbarpour**  
