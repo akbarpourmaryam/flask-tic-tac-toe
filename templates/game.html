@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Game</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h2>Player {{ turn }}'s turn</h2>
+    {% if winner %}
+        <h2>Player {{ winner }} wins!</h2>
+    {% endif %}
+    <form action="{{ url_for('reset') }}" method="get">
+        <button type="submit">Restart Game</button>
+    </form>
+    
+    <form method="post">
+        <table>
+            {% for r in range(n) %}
+            <tr>
+                {% for c in range(n) %}
+                <td>
+                    {% if board[r][c] == 0 and not winner %}
+                    <form method="post" style="display:inline;">
+                        <input type="hidden" name="row" value="{{ r }}">
+                        <input type="hidden" name="col" value="{{ c }}">
+                        <button type="submit">[ ]</button>
+                    </form>                    
+                    {% elif board[r][c] == 1 %}
+                        X
+                    {% elif board[r][c] == 2 %}
+                        O
+                    {% endif %}
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+</body>
+</html>
+
