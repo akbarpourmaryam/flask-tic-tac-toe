@@ -71,18 +71,6 @@ Visit: [http://localhost:5000](http://localhost:5000)
 | Environment       | Add `ASYNC_MODE = eventlet` |
 | Port binding      | Automatically from `os.environ.get("PORT")` |
 
-### ⚠️ Important
-
-Make sure the **bottom of `app.py`** looks like this:
-
-```python
-import os
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    socketio.run(app, host="0.0.0.0", port=port)
-```
-
 ---
 
 ## 📁 Project Structure
