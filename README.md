@@ -2,8 +2,6 @@
 
 A real-time multiplayer Tic Tac Toe game built with Flask and Flask-SocketIO. Two users can join the same room from different devices, choose board size, and play live.
 
-![screenshot](docs/screenshot.png) <!-- Add one later if you'd like -->
-
 ---
 
 ## 🚀 Features
