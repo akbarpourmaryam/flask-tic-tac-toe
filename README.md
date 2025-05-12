@@ -29,7 +29,7 @@ A real-time multiplayer Tic Tac Toe game built with Flask and Flask-SocketIO. Tw
 ### 1. Clone & set up environment
 
 ```bash
-git clone https://github.com/yourusername/flask-tic-tac-toe.git
+git clone https://github.com/akbarpourmaryam/flask-tic-tac-toe.git
 cd flask-tic-tac-toe
 python3 -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
